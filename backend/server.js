@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import connectDB from './database.js';
 import dotenv from 'dotenv';
+dotenv.config();
 
 // Import routes
 import productRoutes from './routes/productRoutes.js';
@@ -20,12 +21,14 @@ connectDB();
 
 // Middleware
 app.use(helmet());
+
 app.use(cors({
-  // origin: ['https://s-mart-1234.vercel.app'],
-  origin: ['https://s-mart-phi.vercel.app'],
+  origin: ['http://localhost:3000', 'https://s-mart-phi.vercel.app'],
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
 app.use(morgan('combined'));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
@@ -78,7 +81,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 const server = app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);

@@ -42,8 +42,7 @@ const productSchema = new mongoose.Schema({
 });
 
 // Index for better query performance
-productSchema.index({ productId: 1 });
-productSchema.index({ skuCode: 1 });
+
 productSchema.index({ category: 1 });
 
 // Virtual for checking if product is in stock

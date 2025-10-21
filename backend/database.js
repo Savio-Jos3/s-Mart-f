@@ -2,25 +2,22 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
 dotenv.config();
+console.log("MONGODB_URI:", process.env.MONGO_URI);
+
 
 const connectDB = async () => {
   try {
-    // Get MongoDB URI from environment variables
-    const mongoURI = process.env.MONGODB_URI;
-    
+    const mongoURI = process.env.MONGO_URI; // or MONGODB_URI if you prefer
     if (!mongoURI) {
-      throw new Error('MONGODB_URI is not defined in environment variables');
+      throw new Error('MONGO_URI is not defined in environment variables');
     }
 
-    // Connect to MongoDB
-    const conn = await mongoose.connect(mongoURI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    // Assign the result to conn
+    const conn = await mongoose.connect(mongoURI);
 
     console.log(`MongoDB Connected: ${conn.connection.host}`);
-    
-    // Handle connection events
+
+    // Connection events
     mongoose.connection.on('connected', () => {
       console.log('Mongoose connected to MongoDB');
     });
@@ -38,6 +35,7 @@ const connectDB = async () => {
     process.exit(1);
   }
 };
+
 
 // Graceful shutdown
 process.on('SIGINT', async () => {
